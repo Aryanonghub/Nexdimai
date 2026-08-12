@@ -1,0 +1,35 @@
+<svg width="800" height="1000" viewBox="0 0 800 1000" xmlns="http://www.w3.org/2000/svg">
+  <!-- LEFT LEG: outer edge A(120,80)->T(400,960), inner edge B(340,80)->T(400,960) -->
+  <g>
+    <polygon fill="#123328" points="120,80 340,80 176,256" />
+    <polygon fill="#1a4536" points="340,80 176,256 352,256" />
+
+    <polygon fill="#1f5240" points="176,256 352,256 232,432" />
+    <polygon fill="#285f4a" points="352,256 232,432 364,432" />
+
+    <polygon fill="#2d6b54" points="232,432 364,432 288,608" />
+    <polygon fill="#357a5e" points="364,432 288,608 376,608" />
+
+    <polygon fill="#3d8768" points="288,608 376,608 344,784" />
+    <polygon fill="#479373" points="376,608 344,784 388,784" />
+
+    <polygon fill="#519f7d" points="344,784 388,784 400,960" />
+  </g>
+
+  <!-- RIGHT LEG: outer edge A'(680,80)->T(400,960), inner edge B'(460,80)->T(400,960) -->
+  <g>
+    <polygon fill="#0f2c22" points="680,80 460,80 624,256" />
+    <polygon fill="#15382c" points="460,80 624,256 448,256" />
+
+    <polygon fill="#1a4536" points="624,256 448,256 568,432" />
+    <polygon fill="#204f3f" points="448,256 568,432 436,432" />
+
+    <polygon fill="#265c48" points="568,432 436,432 512,608" />
+    <polygon fill="#2c6852" points="436,432 512,608 424,608" />
+
+    <polygon fill="#33755c" points="512,608 424,608 456,784" />
+    <polygon fill="#3a8265" points="424,608 456,784 412,784" />
+
+    <polygon fill="#418e6e" points="456,784 412,784 400,960" />
+  </g>
+</svg>

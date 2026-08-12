@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexdim — Applied AI agents for business</title>
+<meta name="description" content="Nexdim designs and integrates AI agents around the work businesses actually do — plus Velmora, our voice-agent calling platform.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16201a; --ink-soft:#3f4c44;
+    --sage-900:#22332a; --sage-700:#37503f; --sage-500:#5c7a67; --sage-300:#9db4a4; --sage-100:#e3ebe2;
+    --cream:#f4f3ec; --paper:#fbfaf5; --line:#dcded3;
+    --ease:cubic-bezier(.4,0,.2,1);
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  img,svg{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  h1,h2,h3,h4{font-family:'Fraunces',serif;font-weight:500;letter-spacing:-0.01em;color:var(--ink);margin:0 0 0.5em;line-height:1.15;}
+  h1 em,h2 em,h3 em{font-style:italic;color:var(--sage-700);}
+  p{margin:0 0 1em;color:var(--ink-soft);}
+  ul{margin:0;padding:0;list-style:none;}
+  :focus-visible{outline:2px solid var(--sage-500);outline-offset:3px;border-radius:4px;}
+  .container{max-width:1180px;margin:0 auto;padding:0 32px;}
+  .eyebrow{font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.14em;font-size:0.72rem;font-weight:600;color:var(--sage-700);display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;}
+  .eyebrow::before{content:'';width:16px;height:1.5px;background:var(--sage-500);display:inline-block;}
+  .lede{font-size:1.08rem;max-width:52ch;}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 26px;border-radius:999px;font-family:'Inter';font-weight:600;font-size:0.92rem;cursor:pointer;border:1px solid transparent;transition:transform 180ms var(--ease),background 180ms var(--ease),border-color 180ms var(--ease),color 180ms var(--ease);}
+  .btn svg{width:16px;height:16px;}
+  .btn-primary{background:var(--sage-700);color:var(--cream);}
+  .btn-primary:hover{background:var(--sage-900);transform:translateY(-1px);}
+  .btn-secondary{background:transparent;color:var(--ink);border-color:var(--line);}
+  .btn-secondary:hover{border-color:var(--sage-500);color:var(--sage-700);transform:translateY(-1px);}
+  .btn-light{background:var(--cream);color:var(--sage-900);}
+  .btn-light:hover{background:#fff;transform:translateY(-1px);}
+
+  .site-header{position:sticky;top:0;z-index:50;background:rgba(244,243,236,0.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color 220ms var(--ease);}
+  .site-header.scrolled{border-bottom-color:var(--line);}
+  .nav-row{display:flex;align-items:center;justify-content:space-between;padding:18px 0;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces';font-weight:500;font-size:1.18rem;color:var(--ink);}
+  .brand svg{width:26px;height:26px;}
+  .nav-links{display:flex;gap:32px;align-items:center;font-size:0.94rem;font-weight:500;}
+  .nav-links a{color:var(--ink-soft);transition:color 160ms var(--ease);}
+  .nav-links a:hover{color:var(--sage-700);}
+  .nav-actions{display:flex;align-items:center;gap:20px;}
+  .nav-toggle{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:8px;cursor:pointer;color:var(--ink);}
+  .nav-toggle svg{width:20px;height:20px;}
+
+  section{padding:88px 0;}
+  .section-head{max-width:640px;margin:0 auto 48px;text-align:left;}
+  .section-head.center{text-align:center;margin-left:auto;margin-right:auto;}
+
+  .hero{padding:88px 0 56px;}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:64px;align-items:center;}
+  .hero h1{font-size:clamp(2.3rem,4.4vw,3.6rem);}
+  .hero-actions{display:flex;gap:16px;margin-top:30px;flex-wrap:wrap;}
+
+  .signature-card{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:0 24px 60px -34px rgba(22,32,26,0.35);}
+  .call-status-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;font-family:'JetBrains Mono';font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-soft);}
+  .status-dot{width:8px;height:8px;border-radius:50%;background:#4e8f63;animation:pulse 2s infinite;flex-shrink:0;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(78,143,99,.45);}70%{box-shadow:0 0 0 8px rgba(78,143,99,0);}100%{box-shadow:0 0 0 0 rgba(78,143,99,0);}}
+  .timer{margin-left:auto;color:var(--sage-700);font-weight:600;}
+  .waveform-canvas{width:100%;height:96px;display:block;border-radius:12px;margin-bottom:18px;}
+  .transcript{display:flex;flex-direction:column;gap:10px;}
+  .bubble{max-width:82%;padding:10px 14px;border-radius:14px;font-size:0.88rem;}
+  .bubble-agent{background:var(--sage-700);color:var(--cream);border-bottom-left-radius:4px;align-self:flex-start;}
+  .bubble-callee{background:var(--sage-100);color:var(--ink);border-bottom-right-radius:4px;align-self:flex-end;}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:28px;transition:transform 200ms var(--ease),box-shadow 200ms var(--ease);}
+  .card:hover{transform:translateY(-4px);box-shadow:0 20px 40px -28px rgba(22,32,26,.4);}
+  .card-icon{width:40px;height:40px;border-radius:10px;background:var(--sage-100);color:var(--sage-700);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+  .card-icon svg{width:20px;height:20px;}
+  .card h3{font-size:1.15rem;}
+  .card p{margin-bottom:0;font-size:0.95rem;}
+
+  .offerings-grid,.usecases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+
+  .pipeline{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+  .pipeline-step{border-top:2px solid var(--sage-300);padding-top:20px;}
+  .pipeline-num{font-family:'JetBrains Mono';font-size:0.78rem;color:var(--sage-500);margin-bottom:10px;display:block;}
+  .pipeline-step h3{font-size:1.05rem;}
+  .pipeline-step p{font-size:0.92rem;margin-bottom:0;}
+
+  .velmora-band{display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:56px;}
+  .mini-result{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:20px;}
+  .mini-result .outcome{display:inline-flex;align-items:center;gap:6px;background:var(--sage-100);color:var(--sage-900);font-family:'JetBrains Mono';font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;padding:6px 12px;border-radius:999px;margin-bottom:14px;}
+  .mini-result ul li{font-size:0.88rem;color:var(--ink-soft);padding-left:18px;position:relative;margin-bottom:6px;}
+  .mini-result ul li::before{content:'';position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--sage-500);}
+
+  .panel-dark{background:linear-gradient(155deg,var(--sage-900),var(--sage-700));color:var(--cream);border-radius:24px;padding:64px 56px;}
+  .panel-dark h2,.panel-dark h3{color:var(--cream);}
+  .panel-dark p{color:rgba(244,243,236,0.78);}
+  .spec-strip{font-family:'JetBrains Mono';font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;display:flex;flex-wrap:wrap;gap:12px 28px;color:rgba(244,243,236,0.65);border-top:1px solid rgba(244,243,236,0.18);padding-top:24px;margin-top:32px;}
+
+  .about-section .section-head{max-width:640px;}
+
+  .contact-panel{text-align:center;}
+  .contact-panel .container{max-width:680px;}
+  .contact-email{display:block;margin-top:14px;font-family:'JetBrains Mono';font-size:0.9rem;color:rgba(244,243,236,0.75);}
+
+  .site-footer{border-top:1px solid var(--line);padding:56px 0 32px;}
+  .footer-grid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:40px;}
+  .footer-brand{max-width:320px;}
+  .footer-logos{display:flex;align-items:center;gap:20px;margin-bottom:14px;}
+  .footer-logos .brand{font-size:1.05rem;}
+  .logo-placeholder{border:1.5px dashed var(--sage-300);border-radius:8px;padding:7px 14px;font-family:'JetBrains Mono';font-size:0.65rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--sage-500);white-space:nowrap;}
+  .footer-nav{display:flex;gap:24px;font-size:0.9rem;flex-wrap:wrap;}
+  .footer-nav a{color:var(--ink-soft);transition:color 160ms var(--ease);}
+  .footer-nav a:hover{color:var(--sage-700);}
+  .footer-bottom{display:flex;justify-content:space-between;padding-top:24px;border-top:1px solid var(--line);font-size:0.82rem;color:var(--ink-soft);flex-wrap:wrap;gap:12px;}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity 600ms var(--ease),transform 600ms var(--ease);}
+  .reveal.in-view{opacity:1;transform:none;}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important;}
+    html{scroll-behavior:auto;}
+    .reveal{opacity:1;transform:none;}
+  }
+
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:40px;}
+    .offerings-grid,.usecases-grid{grid-template-columns:repeat(2,1fr);}
+    .pipeline{grid-template-columns:repeat(2,1fr);gap:32px;}
+    .velmora-band{grid-template-columns:1fr;padding:40px;}
+    .nav-links{position:absolute;top:100%;left:0;right:0;background:var(--paper);border-bottom:1px solid var(--line);flex-direction:column;align-items:flex-start;gap:0;display:none;padding:8px 0;}
+    .nav-links.open{display:flex;}
+    .nav-links a{width:100%;padding:14px 32px;border-bottom:1px solid var(--line);}
+    .nav-toggle{display:flex;}
+    section{padding:64px 0;}
+  }
+  @media (max-width:600px){
+    .offerings-grid,.usecases-grid,.pipeline{grid-template-columns:1fr;}
+    .panel-dark{padding:40px 24px;}
+    .velmora-band{padding:28px;}
+    .footer-grid{flex-direction:column;}
+    .container{padding:0 20px;}
+    .hero{padding:56px 0 40px;}
+  }
+</style>
+</head>
+<body>
+
+<svg style="display:none">
+  <symbol id="nexdim-mark" viewBox="0 0 1285 826">
+    <path d="M452,10 L600,8 L627,192 Z" fill="#a9c6b0"/>
+    <path d="M600,8 L972,14 L627,192 Z" fill="#7ba888"/>
+    <path d="M972,14 L869,452 L627,192 Z" fill="#5c7a67"/>
+    <path d="M972,14 L1274,332 L869,452 Z" fill="#5c7a67"/>
+    <path d="M1274,332 L794,815 L869,452 Z" fill="#5c7a67"/>
+    <path d="M794,815 L660,692 L869,452 Z" fill="#37503f"/>
+    <path d="M794,815 L674,816 L660,692 Z" fill="#7ba888"/>
+    <path d="M674,816 L320,809 L660,692 Z" fill="#7ba888"/>
+    <path d="M320,809 L359,459 L660,692 Z" fill="#5c7a67"/>
+    <path d="M320,809 L10,469 L359,459 Z" fill="#37503f"/>
+    <path d="M10,469 L452,10 L359,459 Z" fill="#5c7a67"/>
+    <path d="M452,10 L627,192 L359,459 Z" fill="#5c7a67"/>
+  </symbol>
+  <symbol id="icon-agent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="7" width="16" height="11" rx="4"/><path d="M12 7V4"/><circle cx="12" cy="3" r="1"/>
+    <circle cx="9" cy="12.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12.5" r="1" fill="currentColor" stroke="none"/>
+    <path d="M9 16h6"/>
+  </symbol>
+  <symbol id="icon-integrate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 15l6-6"/><path d="M10 6l1.5-1.5a3.5 3.5 0 0 1 5 5L15 11"/><path d="M14 18l-1.5 1.5a3.5 3.5 0 0 1-5-5L9 13"/>
+  </symbol>
+  <symbol id="icon-product" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="M4 7.5 12 12l8-4.5"/><path d="M12 12v9"/>
+  </symbol>
+  <symbol id="icon-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6.5 3h3l1.5 4-2 1.5a12 12 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3Z"/>
+  </symbol>
+  <symbol id="icon-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 5h16v11H8l-4 4V5Z"/>
+  </symbol>
+  <symbol id="icon-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.6" fill="currentColor" stroke="none"/>
+  </symbol>
+  <symbol id="icon-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="4.5" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="4.5" cy="18" r="1" fill="currentColor" stroke="none"/>
+  </symbol>
+  <symbol id="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>
+  </symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 7h16M4 12h16M4 17h16"/>
+  </symbol>
+</svg>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a href="index.html" class="brand" aria-label="Nexdim home">
+      <svg viewBox="0 0 1285 826" aria-hidden="true"><use href="#nexdim-mark"/></svg>
+      Nexdim
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#solutions">Solutions</a>
+      <a href="velmora.html">Velmora</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="#contact" class="btn btn-primary">Request a demo</a>
+      <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg aria-hidden="true"><use href="#icon-menu"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">Nexdim / Applied AI</p>
+        <h1>Nexdim builds applied AI agents for the work businesses <em>actually do</em>.</h1>
+        <p class="lede">We design agents around a real workflow, wire them into the tools you already run, and ship products of our own — starting with Velmora, a voice agent that calls, talks, and reports back.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary">Request a demo</a>
+          <a href="velmora.html" class="btn btn-secondary">Explore Velmora <svg aria-hidden="true"><use href="#icon-arrow"/></svg></a>
+        </div>
+      </div>
+      <div class="signature-card" role="img" aria-label="Mock live call interface showing a voice agent speaking with a customer">
+        <div class="call-status-row">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Live call</span>
+          <span class="timer">00:24</span>
+        </div>
+        <canvas class="waveform-canvas" width="400" height="96" aria-hidden="true"></canvas>
+        <div class="transcript">
+          <p class="bubble bubble-agent">Hi, this is Ava from Nexdim Dental — you're due for a cleaning. Want me to find a time?</p>
+          <p class="bubble bubble-callee">Oh — yeah, actually, when's your next opening?</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="what-we-do">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Three ways we work</p>
+        <h2>Solutions, integrations, and products — built around how you actually operate.</h2>
+      </div>
+      <div class="offerings-grid">
+        <div class="card reveal">
+          <div class="card-icon"><svg aria-hidden="true"><use href="#icon-agent"/></svg></div>
+          <h3>AI agent solutions</h3>
+          <p>Custom agents designed around one workflow at a time: support, sales, operations, scheduling, data entry. Not a generic chatbot bolted onto your site.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon"><svg aria-hidden="true"><use href="#icon-integrate"/></svg></div>
+          <h3>Integrations</h3>
+          <p>Agents that plug into the systems you already run — CRMs, phone lines, spreadsheets, internal APIs, messaging — instead of asking you to change how you work.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon"><svg aria-hidden="true"><use href="#icon-product"/></svg></div>
+          <h3>Products</h3>
+          <p>Software Nexdim ships and owns outright. The flagship is Velmora, our voice-agent calling platform.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="velmora">
+    <div class="container">
+      <div class="velmora-band reveal">
+        <div>
+          <p class="eyebrow">Flagship product</p>
+          <h2>Velmora — voice agents that call, talk, and report back.</h2>
+          <p>Configure the model, the voice, and the goal. Velmora places real outbound calls, holds a natural two-way conversation, and comes back with a transcript, an outcome, and next steps — not a recording to sift through.</p>
+          <a href="velmora.html" class="btn btn-secondary">See how it works <svg aria-hidden="true"><use href="#icon-arrow"/></svg></a>
+        </div>
+        <div class="mini-result">
+          <span class="outcome"><svg width="12" height="12" aria-hidden="true"><use href="#icon-target"/></svg> Appointment booked</span>
+          <ul>
+            <li>Caller prefers afternoon slots</li>
+            <li>No pricing objection raised</li>
+            <li>Next step: send confirmation text</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-we-work">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">How we work</p>
+        <h2>From workflow to working agent.</h2>
+      </div>
+      <div class="pipeline">
+        <div class="pipeline-step reveal">
+          <span class="pipeline-num">01</span>
+          <h3>Discover</h3>
+          <p>We map the workflow the agent needs to handle, and what a good outcome looks like.</p>
+        </div>
+        <div class="pipeline-step reveal">
+          <span class="pipeline-num">02</span>
+          <h3>Design</h3>
+          <p>We build the agent: the model, the voice, the guardrails, the goal.</p>
+        </div>
+        <div class="pipeline-step reveal">
+          <span class="pipeline-num">03</span>
+          <h3>Deploy</h3>
+          <p>We connect it to your systems and put it to work — live calls, live data.</p>
+        </div>
+        <div class="pipeline-step reveal">
+          <span class="pipeline-num">04</span>
+          <h3>Refine</h3>
+          <p>We tune it against real outcomes, not assumptions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="solutions">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Solutions</p>
+        <h2>Agents built around a workflow, not a demo.</h2>
+        <p>Every engagement starts with one job the agent needs to do well — then we connect it to the tools that job actually depends on.</p>
+      </div>
+      <div class="usecases-grid">
+        <div class="card reveal">
+          <div class="card-icon"><svg aria-hidden="true"><use href="#icon-chat"/></svg></div>
+          <h3>Support</h3>
+          <p>Agents that answer, triage, and resolve — connected to your helpdesk and knowledge base.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon"><svg aria-hidden="true"><use href="#icon-phone"/></svg></div>
+          <h3>Sales</h3>
+          <p>Outbound and inbound conversations that qualify leads and move them forward, logged straight to your CRM.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon"><svg aria-hidden="true"><use href="#icon-target"/></svg></div>
+          <h3>Operations</h3>
+          <p>Agents that handle the repeatable coordination work — status checks, follow-ups, internal routing.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon"><svg aria-hidden="true"><use href="#icon-agent"/></svg></div>
+          <h3>Scheduling</h3>
+          <p>Booking, rescheduling, and reminders handled end-to-end, synced to the calendars you already use.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon"><svg aria-hidden="true"><use href="#icon-list"/></svg></div>
+          <h3>Data entry</h3>
+          <p>Agents that turn calls, forms, and messages into clean records in the systems that need them.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon"><svg aria-hidden="true"><use href="#icon-integrate"/></svg></div>
+          <h3>Integrations</h3>
+          <p>CRMs, phone systems, spreadsheets, internal APIs, and messaging — wired in, not worked around.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="trust">
+    <div class="container">
+      <div class="panel-dark reveal">
+        <p class="eyebrow" style="color:var(--sage-300)">Why teams choose Nexdim</p>
+        <h2>Built to be checked, not just trusted.</h2>
+        <p style="max-width:56ch">Every call comes back with a real transcript, not a summary you have to take on faith. Every agent is scoped to one job and reviewed by a person before it goes live. If something doesn't work, you'll see it in the record — not just hear about it from us.</p>
+        <div class="spec-strip">
+          <span>Transparent outcomes</span>
+          <span>Real transcripts</span>
+          <span>No black box</span>
+          <span>Human-reviewed launches</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="about-section">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">About</p>
+        <h2>A small studio, applied AI focus.</h2>
+        <p>Nexdim is built by a small team that designs and ships agents end-to-end — reasoning, voice, integration, and the plumbing in between. We'd rather build one agent that actually does the job than a platform full of features nobody uses. Velmora is the clearest expression of that: a single product, built well, doing one thing — voice — properly.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="panel-dark contact-panel reveal">
+        <p class="eyebrow" style="color:var(--sage-300); justify-content:center;">Get in touch</p>
+        <h2>Ready to put an agent to work?</h2>
+        <p style="max-width:48ch; margin-left:auto; margin-right:auto;">Tell us the workflow. We'll tell you if an agent is the right fit — and show you Velmora if voice is part of it.</p>
+        <a href="mailto:hello@nexdim.ai" class="btn btn-light">Request a demo</a>
+        <span class="contact-email">hello@nexdim.ai</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logos">
+          <a href="index.html" class="brand" aria-label="Nexdim home">
+            <svg viewBox="0 0 1285 826" aria-hidden="true"><use href="#nexdim-mark"/></svg>
+            Nexdim
+          </a>
+          <span class="logo-placeholder">Velmora logo</span>
+        </div>
+        <p>Nexdim builds applied AI agents for businesses.</p>
+        <p style="font-size:0.85rem;">Velmora is a product of Nexdim.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="#solutions">Solutions</a>
+        <a href="velmora.html">Velmora</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Nexdim. All rights reserved.</span>
+      <span>hello@nexdim.ai</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const header = document.querySelector('.site-header');
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  const navToggle = document.querySelector('.nav-toggle');
+  const navLinks = document.querySelector('.nav-links');
+  if (navToggle) {
+    navToggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }));
+  }
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const revealEls = document.querySelectorAll('.reveal');
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealEls.forEach(el => el.classList.add('in-view'));
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.15});
+    revealEls.forEach(el => io.observe(el));
+  }
+
+  document.querySelectorAll('.waveform-canvas').forEach(canvas => {
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+
+    function size() {
+      const r = canvas.getBoundingClientRect();
+      canvas.width = r.width * dpr;
+      canvas.height = r.height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    size();
+    window.addEventListener('resize', size);
+
+    const bars = 44;
+    let t = 0;
+
+    function drawFrame() {
+      const r = canvas.getBoundingClientRect();
+      const w = r.width, h = r.height;
+      ctx.clearRect(0, 0, w, h);
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, '#7ba888');
+      grad.addColorStop(1, '#37503f');
+      ctx.fillStyle = grad;
+
+      const gap = w / bars;
+      for (let i = 0; i < bars; i++) {
+        const phase = i * 0.35;
+        const amp = reduceMotion
+          ? Math.abs(Math.sin(phase)) * 0.55 + 0.15
+          : Math.abs(Math.sin(t * 0.06 + phase) * Math.sin(t * 0.013 + i)) * 0.85 + 0.1;
+        const barH = Math.max(4, amp * h);
+        const x = i * gap + gap * 0.25;
+        const y = (h - barH) / 2;
+        const bw = gap * 0.5;
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(x, y, bw, barH, 3);
+        else ctx.rect(x, y, bw, barH);
+        ctx.fill();
+      }
+      t++;
+      if (!reduceMotion) requestAnimationFrame(drawFrame);
+    }
+    drawFrame();
+  });
+
+  document.querySelectorAll('.timer').forEach(timerEl => {
+    let secs = 24;
+    setInterval(() => {
+      secs++;
+      const m = String(Math.floor(secs / 60)).padStart(2, '0');
+      const s = String(secs % 60).padStart(2, '0');
+      timerEl.textContent = `${m}:${s}`;
+    }, 1000);
+  });
+});
+</script>
+</body>
+</html>
