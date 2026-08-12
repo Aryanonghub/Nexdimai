@@ -52,8 +52,12 @@ export default function UseCaseTabs() {
   const [activeId, setActiveId] = useState(USE_CASES[0].id);
 
   return (
-    <div className="usecases-tabs">
-      <div className="usecase-tablist" role="tablist" aria-label="Velmora use cases">
+    <div className="overflow-hidden rounded-[20px] border border-border-subtle bg-surface">
+      <div
+        className="flex flex-wrap border-b border-border-subtle"
+        role="tablist"
+        aria-label="Velmora use cases"
+      >
         {USE_CASES.map((uc) => (
           <button
             key={uc.id}
@@ -61,14 +65,14 @@ export default function UseCaseTabs() {
             id={`tab-${uc.id}`}
             aria-selected={activeId === uc.id}
             aria-controls={`panel-${uc.id}`}
-            className="usecase-tab"
+            className="min-w-37.5 flex-1 cursor-pointer border-0 border-r border-border-subtle bg-transparent px-5 py-4 text-left text-[0.9rem] font-semibold text-text-soft transition-colors duration-160 ease-in-out last:border-r-0 hover:text-text aria-selected:bg-accent-tint aria-selected:text-text aria-selected:shadow-[inset_0_-2px_0_var(--accent)] max-[900px]:min-w-[50%] max-[600px]:min-w-full max-[600px]:border-r-0 max-[600px]:border-b max-[600px]:border-border-subtle"
             onClick={() => setActiveId(uc.id)}
           >
             {uc.tabLabel}
           </button>
         ))}
       </div>
-      <div className="usecase-panels">
+      <div className="p-10 max-[900px]:p-7 max-[600px]:p-5">
         {USE_CASES.map((uc) => (
           <div
             key={uc.id}
@@ -76,16 +80,22 @@ export default function UseCaseTabs() {
             role="tabpanel"
             aria-labelledby={`tab-${uc.id}`}
             hidden={activeId !== uc.id}
-            className={`usecase-panel ${activeId === uc.id ? "active" : ""}`}
+            className={`grid-cols-[1.1fr_0.9fr] items-center gap-10 max-[900px]:grid-cols-1 max-[900px]:gap-6 ${
+              activeId === uc.id ? "grid" : ""
+            }`}
           >
             <div>
               <h3>{uc.heading}</h3>
               <p>{uc.body}</p>
             </div>
-            <div className="usecase-example">
-              <div className="transcript">
-                <p className="bubble bubble-agent">{uc.agentLine}</p>
-                <p className="bubble bubble-callee">{uc.calleeLine}</p>
+            <div className="rounded-[14px] border border-border-subtle bg-bg-soft p-5">
+              <div className="flex flex-col gap-2.5">
+                <p className="max-w-[82%] self-start rounded-[14px] rounded-bl-[4px] bg-accent px-3.5 py-2.5 text-[0.88rem] text-white">
+                  {uc.agentLine}
+                </p>
+                <p className="max-w-[82%] self-end rounded-[14px] rounded-br-[4px] border border-border-subtle bg-surface-elevated px-3.5 py-2.5 text-[0.88rem] text-text">
+                  {uc.calleeLine}
+                </p>
               </div>
             </div>
           </div>

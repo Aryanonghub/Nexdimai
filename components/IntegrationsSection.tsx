@@ -59,9 +59,12 @@ const INTEGRATIONS: Integration[] = [
 export default function IntegrationsSection() {
   return (
     <section id="integrations">
-      <div className="container">
-        <Reveal className="section-head center">
-          <p className="eyebrow" style={{ justifyContent: "center" }}>
+      <div className="mx-auto max-w-295 px-8 max-[600px]:px-5">
+        <Reveal className="mx-auto mb-12 max-w-160 text-center">
+          <p
+            className="mb-3.5! inline-flex items-center gap-2 font-mono text-[0.72rem] font-semibold tracking-[0.14em] text-text-soft uppercase before:inline-block before:h-[1.5px] before:w-4 before:bg-accent before:content-['']"
+            style={{ justifyContent: "center" }}
+          >
             Example integrations
           </p>
           <h2>
@@ -70,7 +73,7 @@ export default function IntegrationsSection() {
             to orchestrate all your apps.
           </h2>
         </Reveal>
-        <div className="integrations-grid">
+        <div className="grid grid-cols-3 gap-4 max-[900px]:grid-cols-2 max-[600px]:grid-cols-1">
           {INTEGRATIONS.map((integration) => (
             <IntegrationCard key={integration.name} integration={integration} />
           ))}

@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
+import { Fraunces, Inter, JetBrains_Mono, Geist } from "next/font/google";
 import "./globals.css";
 import IconSprite from "@/components/IconSprite";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -26,9 +29,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nexdim — Applied AI agents for business",
+  title: "Nexdim AI — Applied AI agents for business",
   description:
-    "Nexdim designs and integrates AI agents around the work businesses actually do — plus Velmora, our voice-agent calling platform.",
+    "Nexdim AI designs and integrates AI agents around the work businesses actually do — plus Velmora, our voice-agent calling platform.",
 };
 
 export default function RootLayout({
@@ -39,9 +42,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      className={cn(fraunces.variable, inter.variable, jetbrainsMono.variable, "font-sans", geist.variable)}
     >
-      <body>
+      <body className="m-0 bg-bg text-text text-base leading-[1.6] antialiased [font-family:var(--font-inter),sans-serif]">
         <IconSprite />
         {children}
       </body>

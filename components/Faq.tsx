@@ -90,16 +90,19 @@ const FAQS: FaqEntry[] = [
 
 export default function Faq() {
   return (
-    <div className="faq-list">
+    <div className="border-t border-border-subtle">
       {FAQS.map((faq) => (
-        <details className="faq-item" key={faq.question}>
-          <summary>
+        <details className="group border-b border-border-subtle" key={faq.question}>
+          <summary className="flex list-none cursor-pointer items-center justify-between gap-4 px-1 py-5.5 font-serif text-[1.05rem] font-medium text-text [&::-webkit-details-marker]:hidden">
             {faq.question}
-            <svg className="faq-icon" aria-hidden="true">
+            <svg
+              className="h-5 w-5 shrink-0 text-accent-light transition-transform duration-200 ease-in-out group-open:rotate-45"
+              aria-hidden="true"
+            >
               <use href="#icon-plus" />
             </svg>
           </summary>
-          <p className="faq-answer">{faq.answer}</p>
+          <p className="mb-0 max-w-[70ch] pr-7.5 pb-5.5 pl-1 text-[0.95rem]">{faq.answer}</p>
         </details>
       ))}
     </div>

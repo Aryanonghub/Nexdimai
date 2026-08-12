@@ -42,7 +42,9 @@ export default function Reveal({
   return (
     <div
       ref={ref}
-      className={`reveal ${visible ? "in-view" : ""} ${className}`.trim()}
+      className={`transition-[opacity,transform] duration-600 ease-in-out ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4.5"
+      } ${className}`.trim()}
       style={style}
     >
       {children}
